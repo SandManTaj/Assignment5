@@ -4,6 +4,8 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Data.Entity.SqlServer;
+
 
 namespace DataAccessLayer
 {
@@ -16,23 +18,27 @@ namespace DataAccessLayer
         {
             this.context = context;
             dbset = context.Set<T>();
+            SqlProviderServices.SqlServerTypesAssemblyName = typeof(Microsoft.SqlServer.Types.SqlGeography).Assembly.FullName;
         }
 
         public void Insert(T entity)
         {
             context.Entry(entity).State = EntityState.Added;
+            SqlServerTypes.Utilities.LoadNativeAssemblies(AppDomain.CurrentDomain.BaseDirectory);
             context.SaveChanges();
         }
 
         public void Delete(T entity)
         {
             context.Entry(entity).State = EntityState.Deleted;
+            SqlServerTypes.Utilities.LoadNativeAssemblies(AppDomain.CurrentDomain.BaseDirectory);
             context.SaveChanges();
         }
 
         public void Update(T entity)
         {
             context.Entry(entity).State = EntityState.Modified;
+            SqlServerTypes.Utilities.LoadNativeAssemblies(AppDomain.CurrentDomain.BaseDirectory);
             context.SaveChanges();
         }
 
