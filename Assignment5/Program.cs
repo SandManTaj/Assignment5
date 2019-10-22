@@ -11,6 +11,7 @@ namespace Assignment5
     public class Program
     {
         private static IBusinessLayer businessLayer = new BusinessLayer.BusinessLayer();
+        private static UnitOfWork unitOfWork = new UnitOfWork();
         static void Main(string[] args)
         {
             bool cont = true;
@@ -169,10 +170,12 @@ namespace Assignment5
 
             standard.StandardName = name;
             standard.Description = description;
-            businessLayer.AddStandard(standard);
+            unitOfWork.StandardRepository.Insert(standard);
+            unitOfWork.Save();
             teacher.TeacherName = name;
             teacher.StandardId = standard.StandardId;
-            businessLayer.AddTeacher(teacher);
+            unitOfWork.TeacherRepository.Insert(teacher);
+            unitOfWork.Save();
         }
 
         public static void UpdateTeacher(int id)
@@ -180,10 +183,11 @@ namespace Assignment5
             Teacher teacher;
             try
             {
-                teacher = businessLayer.GetTeacherByID(id);
-                Console.WriteLine("Please enter a new name");
+                teacher = unitOfWork.TeacherRepository.GetById(id);
+                Console.WriteLine("Please enter a new name {0}", id);
                 teacher.TeacherName = Console.ReadLine();
-                businessLayer.UpdateTeacher(teacher);
+                unitOfWork.TeacherRepository.Update(teacher);
+                unitOfWork.Save();
             }
             catch (Exception e)
             {
@@ -196,8 +200,10 @@ namespace Assignment5
         {
             try
             {
-                Teacher teacher = businessLayer.GetTeacherByID(id);
-                businessLayer.RemoveTeacher(teacher);
+                Teacher teacher = unitOfWork.TeacherRepository.GetById(id);
+                Standard standard = unitOfWork.StandardRepository.GetById(teacher.StandardId ?? -1);
+                unitOfWork.StandardRepository.Delete(standard);
+                unitOfWork.TeacherRepository.Delete(teacher);
             }
             catch (Exception e)
             {
@@ -213,10 +219,11 @@ namespace Assignment5
             try
             {
                 Course course = new Course();
-                Teacher teacher = businessLayer.GetTeacherByID(id);
+                Teacher teacher = unitOfWork.TeacherRepository.GetById(id);
                 course.CourseName = name;
                 course.TeacherId = id;
-                businessLayer.AddCourse(course);
+                unitOfWork.CourseRepository.Insert(course);
+                unitOfWork.Save();
             }
             catch(Exception e)
             {
@@ -228,8 +235,9 @@ namespace Assignment5
         {
             try
             {
-                Course course = businessLayer.GetCourseByID(id);
-                businessLayer.RemoveCourse(course);
+                Course course = unitOfWork.CourseRepository.GetById(id);
+                unitOfWork.CourseRepository.Delete(course);
+                unitOfWork.Save();
             }
             catch (Exception e)
             {
@@ -242,9 +250,10 @@ namespace Assignment5
             Course course;
             try
             {
-                course = businessLayer.GetCourseByID(id);
+                course = unitOfWork.CourseRepository.GetById(id);
                 course.CourseName = name;
-                businessLayer.UpdateCourse(course);
+                unitOfWork.CourseRepository.Update(course);
+                unitOfWork.Save();
             }
             catch (Exception e)
             {
@@ -258,7 +267,7 @@ namespace Assignment5
         #region Queries
         public static void DisplayAllStandard()
         {
-            IEnumerable<Standard> standards = businessLayer.GetAllStandards();
+            IEnumerable<Standard> standards = unitOfWork.StandardRepository.GetAll();
             foreach (Standard s in standards)
             {
                 if (s != null)
@@ -271,7 +280,7 @@ namespace Assignment5
 
         public static void DisplayAllTeachers()
         {
-            IEnumerable<Teacher> teachers = businessLayer.GetAllTeachers();
+            IEnumerable<Teacher> teachers = unitOfWork.TeacherRepository.GetAll();
             foreach (Teacher t in teachers)
             {
                 if (t != null)
@@ -285,8 +294,8 @@ namespace Assignment5
         {
             try
             {
-                Teacher teacher = businessLayer.GetTeacherByID(id);
-                IEnumerable<Course> courses = businessLayer.GetAllCourses();
+                Teacher teacher = unitOfWork.TeacherRepository.GetById(id);
+                IEnumerable<Course> courses = unitOfWork.CourseRepository.GetAll();
                 foreach (Course c in courses)
                 {
                     if (c.TeacherId == id)
@@ -301,8 +310,8 @@ namespace Assignment5
 
         public static void DisplayAllCourses()
         {
-            IEnumerable<Course> standards = businessLayer.GetAllCourses();
-            foreach (Course c in standards)
+            IEnumerable<Course> courses = unitOfWork.CourseRepository.GetAll();
+            foreach (Course c in courses)
             {
                 if (c != null)
                     Console.WriteLine("Teacher ID: {0}, Course Name: {1}, Course ID: {2}", c.TeacherId, c.CourseName, c.CourseId);

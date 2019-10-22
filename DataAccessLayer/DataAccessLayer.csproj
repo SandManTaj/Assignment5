@@ -111,6 +111,7 @@
     <Compile Include="Teacher.cs">
       <DependentUpon>SchoolDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
