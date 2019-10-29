@@ -10,7 +10,6 @@ namespace Assignment5
 {
     public class Program
     {
-        private static IBusinessLayer businessLayer = new BusinessLayer.BusinessLayer();
         private static UnitOfWork unitOfWork = new UnitOfWork();
         static void Main(string[] args)
         {
@@ -22,132 +21,120 @@ namespace Assignment5
             string description = "";
             while (cont == true)
             {
-                Console.WriteLine("Would you like to (1) change teachers, (2) change courses, (3) make a query, or (4) exit?");
+                Console.WriteLine("Please select an option:\n" +
+                    "(1) Add Teacher\n" +
+                    "(2) Update Teacher\n" +
+                    "(3) Delete Teacher\n" +
+                    "(4) Add Course\n" +
+                    "(5) Update Course Name\n" +
+                    "(6) Update Course Teacher\n" +
+                    "(7) Delete Course\n" +
+                    "(8) Display all courses taught by a teacher\n" +
+                    "(9) Display all teachers\n" +
+                    "(10) Display all courses\n" +
+                    "(11) Display all standards\n" +
+                    "(12) Exit\n");
                 line = Console.ReadLine();
                 decision = int.Parse(line);
+                DisplayAllTeachers();
                 if (decision == 1)
                 {
-                    Console.WriteLine("Would you like to (1) add, (2) delete, or (3) update a teacher?");
-                    line = Console.ReadLine();
-                    decision = int.Parse(line);
-                    if (decision == 1)
-                    {
-                        Console.WriteLine("Please enter a name");
-                        name = Console.ReadLine();
-                        Console.WriteLine("Please enter a description");
-                        description = Console.ReadLine();
-                        AddTeacher(name, description);
-                        DisplayAllTeachers();
-                        Console.ReadKey();
-                    }
-                    else if (decision == 2)
-                    {
-                        DisplayAllTeachers();
-                        Console.WriteLine("Please enter the ID of the teacher you would like to remove");
-                        line = Console.ReadLine();
-                        id = int.Parse(line);
-                        RemoveTeacher(id);
-                        DisplayAllTeachers();
-                        Console.ReadKey();
-                    }
-                    else if (decision == 3)
-                    {
-                        DisplayAllTeachers();
-                        Console.WriteLine("Please enter the ID of the teacher you would like to update");
-                        line = Console.ReadLine();
-                        id = int.Parse(line);
-                        UpdateTeacher(id);
-                        DisplayAllTeachers();
-                        Console.ReadKey();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid Input");
-                        Console.ReadKey();
-                    }
+                    Console.WriteLine("Please enter a name");
+                    name = Console.ReadLine();
+                    Console.WriteLine("Please enter a description");
+                    description = Console.ReadLine();
+                    AddTeacher(name, description);
+                    DisplayAllTeachers();
+                    Console.ReadKey();
                 }
                 else if (decision == 2)
                 {
-                    Console.WriteLine("Would you like to (1) add, (2) delete, or (3) update?");
+                    Console.WriteLine("Please enter the ID of the teacher you would like to update");
                     line = Console.ReadLine();
-                    decision = int.Parse(line);
-                    if (decision == 1)
-                    {
-                        DisplayAllTeachers();
-                        Console.WriteLine("Please enter a name");
-                        name = Console.ReadLine();
-                        Console.WriteLine("Please enter a teacher ID");
-                        line = Console.ReadLine();
-                        id = int.Parse(line);
-                        AddCourse(name, id);
-                        DisplayAllCourses();
-                        Console.ReadKey();
-                    }
-                    else if (decision == 2)
-                    {
-                        DisplayAllCourses();
-                        Console.WriteLine("Please enter the ID of the course you would like to remove");
-                        line = Console.ReadLine();
-                        id = int.Parse(line);
-                        RemoveCourse(id);
-                        DisplayAllCourses();
-                        Console.ReadKey();
-                    }
-                    else if (decision == 3)
-                    {
-                        DisplayAllCourses();
-                        Console.WriteLine("Please enter an course ID");
-                        line = Console.ReadLine();
-                        id = int.Parse(line);
-                        Console.WriteLine("Please enter a new name");
-                        name = Console.ReadLine();
-                        UpdateCourse(id, name);
-                        DisplayAllCourses();
-                        Console.ReadKey();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid Input");
-                        Console.ReadKey();
-                    }
+                    id = int.Parse(line);
+                    UpdateTeacher(id);
+                    DisplayAllTeachers();
+                    Console.ReadKey();
                 }
                 else if (decision == 3)
                 {
-                    Console.WriteLine("Would you like to (1) Display all courses taught by Teacher using TeacherID, \n " +
-                        "(2) display all Teachers, (3) display All Standards, (4) Display All Courses?");
+                    Console.WriteLine("Please enter the ID of the teacher you would like to remove");
                     line = Console.ReadLine();
-                    decision = int.Parse(line);
-                    if (decision == 1)
-                    {
-                        DisplayAllTeachers();
-                        Console.WriteLine("Please enter the ID of the teacher whose courses you would like to view");
-                        line = Console.ReadLine();
-                        id = int.Parse(line);
-                        DisplayCoursesByTeacher(id);
-                        Console.ReadKey();
-                    }
-                    else if (decision == 2)
-                    {
-                        DisplayAllTeachers();
-                        Console.ReadKey();
-                    }
-                    else if (decision == 3)
-                    {
-                        DisplayAllStandard();
-                        Console.ReadKey();
-                    }
-                    else if (decision == 4)
-                    {
-                        DisplayAllCourses();
-                        Console.ReadKey();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid Input");
-                        Console.ReadKey();
-                    }
+                    id = int.Parse(line);
+                    RemoveTeacher(id);
+                    DisplayAllTeachers();
+                    Console.ReadKey();
                 }
                 else if (decision == 4)
+                {
+                    Console.WriteLine("Please enter a name");
+                    name = Console.ReadLine();
+                    Console.WriteLine("Please enter a teacher ID");
+                    line = Console.ReadLine();
+                    id = int.Parse(line);
+                    AddCourse(name, id);
+                    DisplayAllCourses();
+                    Console.ReadKey();
+                }
+                else if (decision == 5)
+                {
+                    DisplayAllCourses();
+                    Console.WriteLine("Please enter an course ID");
+                    line = Console.ReadLine();
+                    id = int.Parse(line);
+                    Console.WriteLine("Please enter a new name");
+                    name = Console.ReadLine();
+                    UpdateCourse(id, name);
+                    DisplayAllCourses();
+                    Console.ReadKey();
+                }
+                else if (decision == 6)
+                {
+                    Console.WriteLine("Please enter the ID of the Teacher");
+                    line = Console.ReadLine();
+                    int tid = int.Parse(line);
+                    DisplayAllCourses();
+                    Console.WriteLine("Please enter the ID of the course you would like to add to the teacher");
+                    line = Console.ReadLine();
+                    int cid = int.Parse(line);
+                    AddExistingCourseToTeacher(tid, cid);
+                    DisplayCoursesByTeacher(tid);
+                    Console.ReadKey();
+                }
+                else if (decision == 7)
+                {
+                    DisplayAllCourses();
+                    Console.WriteLine("Please enter the ID of the course you would like to remove");
+                    line = Console.ReadLine();
+                    id = int.Parse(line);
+                    RemoveCourse(id);
+                    DisplayAllCourses();
+                    Console.ReadKey();
+                }
+                else if (decision == 8)
+                {
+                    Console.WriteLine("Please enter the ID of the teacher whose courses you would like to view");
+                    line = Console.ReadLine();
+                    id = int.Parse(line);
+                    DisplayCoursesByTeacher(id);
+                    Console.ReadKey();
+                }
+                else if (decision == 9)
+                {
+                    DisplayAllTeachers();
+                    Console.ReadKey();
+                }
+                else if (decision == 10)
+                {
+                    DisplayAllCourses();
+                    Console.ReadKey();
+                }
+                else if (decision == 11)
+                {
+                    DisplayAllStandard();
+                    Console.ReadKey();
+                }
+                else if (decision == 12)
                 {
                     cont = false;
                 }
@@ -204,6 +191,7 @@ namespace Assignment5
                 Standard standard = unitOfWork.StandardRepository.GetById(teacher.StandardId ?? -1);
                 unitOfWork.StandardRepository.Delete(standard);
                 unitOfWork.TeacherRepository.Delete(teacher);
+                unitOfWork.Save();
             }
             catch (Exception e)
             {
@@ -226,6 +214,22 @@ namespace Assignment5
                 unitOfWork.Save();
             }
             catch(Exception e)
+            {
+                Console.WriteLine("This ID does not exist");
+            }
+
+        }
+
+        public static void AddExistingCourseToTeacher(int tid, int cid)
+        {
+            try
+            {
+                Course course = unitOfWork.CourseRepository.GetById(cid);
+                course.TeacherId = tid;
+                unitOfWork.CourseRepository.Insert(course);
+                unitOfWork.Save();
+            }
+            catch (Exception e)
             {
                 Console.WriteLine("This ID does not exist");
             }
