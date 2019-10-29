@@ -36,6 +36,7 @@ namespace Assignment5
                     "(12) Exit\n");
                 line = Console.ReadLine();
                 decision = int.Parse(line);
+                Console.Clear();
                 DisplayAllTeachers();
                 if (decision == 1)
                 {
@@ -121,7 +122,7 @@ namespace Assignment5
                 }
                 else if (decision == 9)
                 {
-                    DisplayAllTeachers();
+                    //DisplayAllTeachers();
                     Console.ReadKey();
                 }
                 else if (decision == 10)
